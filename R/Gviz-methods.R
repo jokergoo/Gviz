@@ -1930,6 +1930,12 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
                       default.units="native", just=barsAndLab$align)
         }
     }
+    ############
+    panelFun = .dpOrDefault(GdObject, "panelFun", NULL)
+    if(!is.null(panelFun)) {
+        panelFun()
+    }
+    ############
     popViewport(1)
     ## Finaly we set up the image map
     ## FIXME: we may want to record the merging information here
@@ -3229,6 +3235,12 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     do.call("panel.xyplot", plot_args)
     if(!any(c("mountain","polygon") %in% type) && !is.null(baseline) && !is.na(baseline))
         panel.abline(h=baseline, col=pcols$col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
+    ############
+    panelFun = .dpOrDefault(GdObject, "panelFun", NULL)
+    if(!is.null(panelFun)) {
+        panelFun()
+    }
+    ############
     popViewport(1)
 
     return(invisible(GdObject))
