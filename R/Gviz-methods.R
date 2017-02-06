@@ -2191,7 +2191,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             y <- c(rep(readInfo$stack[sel] + sh, 2), rep(readInfo$stack[sel] - sh, 2))
             id <- rep(readInfo$uid[sel], 4)
             ## The arrow heads facing right
-            w <- Gviz:::.pxResolution(coord="x", 5)
+            w <- Gviz.epik:::.pxResolution(coord="x", 5)
             sel <- readInfo$arrow == "+"
             ah <- pmax(start(readInfo)[sel], end(readInfo)[sel]-w)
             x <- c(x, start(readInfo)[sel], ah, end(readInfo)[sel], ah, start(readInfo)[sel])
