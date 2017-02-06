@@ -1775,9 +1775,9 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
 
 ## empty the session cache
 clearSessionCache <- function(){
-    assignInNamespace(".ucscCache", new.env(), ns="Gviz")
-    assignInNamespace(".ensemblCache", new.env(), ns="Gviz")
-    assignInNamespace(".martCache", new.env(), ns="Gviz")
+    assignInNamespace(".ucscCache", new.env(), ns="Gviz.epik")
+    assignInNamespace(".ensemblCache", new.env(), ns="Gviz.epik")
+    assignInNamespace(".martCache", new.env(), ns="Gviz.epik")
 }
 
 

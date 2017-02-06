@@ -1271,8 +1271,8 @@ addScheme <- function(scheme, name){
 }
 
 ## Tables containing the UCSC to ENSEMBL genome mapping
-.biomartCurrentVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsNow.txt"), package="Gviz"), as.is=TRUE)
-.biomartVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsLatest.txt"), package="Gviz"), as.is=TRUE)
+.biomartCurrentVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsNow.txt"), package="Gviz.epik"), as.is=TRUE)
+.biomartVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsLatest.txt"), package="Gviz.epik"), as.is=TRUE)
 
 ## Helper function to map between UCSC and ENSEMBl genome information
 ## Arguments:
@@ -1857,7 +1857,7 @@ exportTracks <- function(tracks, range, chromosome, file)
 ## Construct a URL to UCSC showing the custom tracks
 ucscUrl <- function(chr, range, spec, gen, open=TRUE)
 {
-    hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz"),
+    hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz.epik"),
                            "customTracks.bed", spec, gen), intern=TRUE, ignore.stderr=TRUE)
 
     url <- sprintf(paste("http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=%s&Submit=go+to+genome+browser",
@@ -1949,7 +1949,7 @@ devDims <- function(width, height, ncol=12, nrow=8, res=72){
                   "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack")
     defs <- try(sapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list"), simplify=FALSE), silent=TRUE)
     if(!is(defs, "try-error") && is.null(.parMappings))
-        assignInNamespace(x=".parMappings", value=defs, ns="Gviz")
+        assignInNamespace(x=".parMappings", value=defs, ns="Gviz.epik")
 }
 .parMappings <- NULL
 
