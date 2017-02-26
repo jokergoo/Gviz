@@ -1481,241 +1481,268 @@ addScheme <- function(scheme, name){
 ##    o extend.right, extend.left: extend the coordinates in 'from' and 'too'
 ##    o title.width: the expansion factor for the width of the title track
 ## Value: the function is called for its side-effect of drawing on the graphics device
-plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.only=FALSE, extend.right=0,
-                       extend.left=0, title.width=NULL, add=FALSE, main, cex.main=2, fontface.main=2,
-                       col.main="black", margin=6, chromosome=NULL, innerMargin=3){
-    ## If we have to open a new device for this but do not run through the whole function because of errors we want to
-    ## clean up in the end
+
+plotTracks = function (trackList, from = NULL, to = NULL, ..., sizes = NULL,
+    panel.only = FALSE, extend.right = 0, extend.left = 0, title.width = NULL,
+    add = FALSE, main, cex.main = 2, fontface.main = 2, col.main = "black",
+    margin = 6, chromosome = NULL, innerMargin = 3)
+{
     done <- FALSE
     cdev <- dev.cur()
-    on.exit(if(cdev==1 && !done) dev.off())
-    ## We only need a new plot for regular calls to the function. Both add==TRUE and panel.only=TRUE will add to an existing grid plot
-    if(!panel.only && !add)
+    on.exit(if (cdev == 1 && !done) dev.off())
+    if (!panel.only && !add)
         grid.newpage()
-    if(!is.list(trackList))
+    if (!is.list(trackList))
         trackList <- list(trackList)
-    ## All arguments in ... are considered to be additional display parameters and need to be attached to each item in the track list
     dps <- list(...)
     trackList <- lapply(trackList, function(x) {
-        displayPars(x, recursive=TRUE) <- dps
+        displayPars(x, recursive = TRUE) <- dps
         return(x)
     })
-
-    ## OverlayTracks and HighlightTracks can be discarded if they are empty
-    trackList <- trackList[!sapply(trackList, function(x) (is(x, "HighlightTrack") || is(x, "OverlayTrack")) && length(x) < 1)]
+    trackList <- trackList[!sapply(trackList, function(x) (is(x,
+        "HighlightTrack") || is(x, "OverlayTrack")) && length(x) <
+        1)]
     isHt <- which(sapply(trackList, is, "HighlightTrack"))
     isOt <- which(sapply(trackList, is, "OverlayTrack"))
-    ## A mix between forward and reverse strand tracks should trigger an alarm
     strds <- unique(.whichStrand(trackList))
-    if(!is.null(strds) && length(strds) > 1)
+    if (!is.null(strds) && length(strds) > 1)
         warning("Plotting a mixture of forward strand and reverse strand tracks.\n Are you sure this is correct?")
-    ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
-    ## size, resolution or plotting ranges.
-    ## Chromosomes should all be the same for all tracks, if not we will force them to be set to the first one that can be detected.
-    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first.
-    ## We may want to use alpha blending on those devices that support it, but also fall back to non-transparent colors without causing
-    ## warnings.
     hasAlpha <- .supportsAlpha()
     chrms <- unique(unlist(lapply(trackList, .recChromosome)))
-    if(is.null(chromosome)){
-        chrms <- if(!is.null(chrms)) chrms[gsub("^chr", "", chrms)!="NA"] else chrms
+    if (is.null(chromosome)) {
+        chrms <- if (!is.null(chrms))
+            chrms[gsub("^chr", "", chrms) != "NA"]
+        else chrms
         chromosome <- head(chrms, 1)
-        if(length(chromosome)==0)
+        if (length(chromosome) == 0)
             chromosome <- "chrNA"
-        if(!is.null(chrms) && length(unique(chrms))!=1)
-            warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '", chromosome, "'", sep="")
+        if (!is.null(chrms) && length(unique(chrms)) != 1)
+            warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '",
+                chromosome, "'", sep = "")
     }
-    if(!is.null(from) || !(is.null(to))){
-        trackList <- lapply(trackList, function(x){
+    if (!is.null(from) || !(is.null(to))) {
+        trackList <- lapply(trackList, function(x) {
             chromosome(x) <- chromosome
-            subset(x, from=from, to=to, chromosome=chromosome, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
+            subset(x, from = from, to = to, chromosome = chromosome,
+                sort = FALSE, stacks = FALSE, use.defaults = FALSE)
         })
     }
-    trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, any(.needsAxis(trackList)), any(.needsTitle(trackList)),
-                                title.width, alpha=hasAlpha, ...)
-
-    ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
-    ranges <- .defaultRange(trackList, from=from, to=to, extend.left=extend.left, extend.right=extend.right, annotation=TRUE)
-    ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
-    trackList <- lapply(trackList, subset, from=ranges["from"], to=ranges["to"], chromosome=chromosome)
-    trackList <- lapply(trackList, setStacks, recomputeRanges=FALSE)
-    ## Highlight tracks are just a way to add a common highlighting region to several tracks, but other than that we can treat the containing
-    ## tracks a normal track objects, and thus unlist them. We only want to record their indexes in the expanded list for later.
+    trackList <- lapply(trackList, consolidateTrack, chromosome = chromosome,
+        any(.needsAxis(trackList)), any(.needsTitle(trackList)),
+        title.width, alpha = hasAlpha, ...)
+    ranges <- .defaultRange(trackList, from = from, to = to,
+        extend.left = extend.left, extend.right = extend.right,
+        annotation = TRUE)
+    trackList <- lapply(trackList, subset, from = ranges["from"],
+        to = ranges["to"], chromosome = chromosome)
+    trackList <- lapply(trackList, setStacks, recomputeRanges = FALSE)
     htList <- list()
-    expandedTrackList <- if(length(isHt)){
+    expandedTrackList <- if (length(isHt)) {
         j <- 1
         tlTemp <- list()
-        for(i in seq_along(trackList)){
-            if(! i %in% isHt){
+        for (i in seq_along(trackList)) {
+            if (!i %in% isHt) {
                 tlTemp <- c(tlTemp, trackList[[i]])
-                j <- j+1
-            }else{
+                j <- j + 1
+            }
+            else {
                 tlTemp <- c(tlTemp, trackList[[i]]@trackList)
-                htList[[as.character(i)]] <- list(indexes=j:(j+length(trackList[[i]]@trackList)-1),
-                                                  track=trackList[[i]])
-                j <- j+length(trackList[[i]]@trackList)
+                htList[[as.character(i)]] <- list(indexes = j:(j +
+                  length(trackList[[i]]@trackList) - 1), track = trackList[[i]])
+                j <- j + length(trackList[[i]]@trackList)
             }
         }
         tlTemp
-    }else trackList
-    ## If there is a AlignmentsTrack and also a SequenceTrack we can tell the former to use the latter, unless already provided
+    }
+    else trackList
     isAt <- sapply(expandedTrackList, is, "AlignmentsTrack")
     isSt <- sapply(expandedTrackList, is, "SequenceTrack")
-    for(ai in which(isAt)){
-        if(is.null(expandedTrackList[[ai]]@referenceSequence) && any(isSt))
+    for (ai in which(isAt)) {
+        if (is.null(expandedTrackList[[ai]]@referenceSequence) &&
+            any(isSt))
             expandedTrackList[[ai]]@referenceSequence <- expandedTrackList[[min(which(isSt))]]
     }
-    ## We need to reverse the list to get a top to bottom plotting order
     expandedTrackList <- rev(expandedTrackList)
-    map <- vector(mode="list", length=length(expandedTrackList))
+    map <- vector(mode = "list", length = length(expandedTrackList))
     titleCoords <- NULL
     names(map) <- rev(sapply(expandedTrackList, names))
-    ## Open a fresh page and set up the bounding box, unless add==TRUE
-    if(!panel.only) {
-        ## We want a margin pixel border
-        borderFacts <- 1-((margin*2)/vpLocation()$size)
-        vpBound <- viewport(width=borderFacts[1], height=borderFacts[2])
+    if (!panel.only) {
+        borderFacts <- 1 - ((margin * 2)/vpLocation()$size)
+        vpBound <- viewport(width = borderFacts[1], height = borderFacts[2])
         pushViewport(vpBound)
-        ## If there is a header we have to make some room for it here
-        if(!missing(main) && main != "")
-        {
-            vpHeader <- viewport(width=1, height=0.1, y=1, just=c("center", "top"))
+        if (!missing(main) && main != "") {
+            main_height = grobHeight(textGrob(main, gp = gpar(col = col.main, cex = cex.main,
+                fontface = fontface.main))) + 
+                          grobHeight(textGrob("foo", gp = gpar(col = col.main, cex = cex.main,
+                fontface = fontface.main)))
+            vpHeader <- viewport(width = 1, height = main_height, y = 1,
+                just = c("center", "top"))
             pushViewport(vpHeader)
-            grid.text(main, gp=gpar(col=col.main, cex=cex.main, fontface=fontface.main))
+            grid.text(main, gp = gpar(col = col.main, cex = cex.main,
+                fontface = fontface.main))
             popViewport(1)
-            vpMain <-  viewport(width=1, height=0.9, y=0.9, just=c("center", "top"))
-        }else{
-            vpMain <-  viewport(width=1, height=1)
+            vpMain <- viewport(width = 1, height = unit(1, "npc") - main_height, y = unit(1, "npc") - main_height,
+                just = c("center", "top"))
+        }
+        else {
+            vpMain <- viewport(width = 1, height = 1)
         }
         pushViewport(vpMain)
-        ## A first guestimate of the vertical space that's needed
-        spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width, spacing=innerMargin)
-    } else {
+        spaceSetup <- .setupTextSize(expandedTrackList, sizes,
+            title.width, spacing = innerMargin)
+    }
+    else {
         vpBound <- viewport()
         pushViewport(vpBound)
-        spaceSetup <- .setupTextSize(expandedTrackList, sizes, spacing=innerMargin)
+        spaceSetup <- .setupTextSize(expandedTrackList, sizes,
+            spacing = innerMargin)
     }
-    ## First iteration to set up all the dimensions by calling the drawGD methods in prepare mode, i.e.,
-    ## argument prepare=TRUE. Nothing is drawn at this point, and this only exists to circumvent the
-    ## chicken and egg problem of not knowing how much space we need until we draw, but also not knowing
-    ## where to draw until we know the space needed.
-    for(i in rev(seq_along(expandedTrackList)))
-    {
-        fontSettings <- .fontGp(expandedTrackList[[i]], cex=NULL)
-        vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i],
-                             gp=fontSettings)
+    for (i in rev(seq_along(expandedTrackList))) {
+        fontSettings <- .fontGp(expandedTrackList[[i]], cex = NULL)
+        vpTrack <- viewport(x = 0, y = sum(spaceSetup$spaceNeeded[1:i]),
+            just = c(0, 1), width = 1, height = spaceSetup$spaceNeeded[i],
+            gp = fontSettings)
         pushViewport(vpTrack)
-        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing,
-                                              width=1 - spaceSetup$title.width - spaceSetup$spacing * 2, just=0) else viewport(width=1)
+        vpContent <- if (!panel.only)
+            viewport(x = spaceSetup$title.width + spaceSetup$spacing,
+                width = 1 - spaceSetup$title.width - spaceSetup$spacing *
+                  2, just = 0)
+        else viewport(width = 1)
         pushViewport(vpContent)
-        expandedTrackList[[i]] <- drawGD(expandedTrackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], prepare=TRUE, subset=FALSE)
+        expandedTrackList[[i]] <- drawGD(expandedTrackList[[i]],
+            minBase = ranges["from"], maxBase = ranges["to"],
+            prepare = TRUE, subset = FALSE)
         popViewport(2)
     }
-    ## Now lets recalculate the space and draw for real
-    spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width, spacing=innerMargin)
-    ## First the highlight box backgrounds
-    htBoxes <- data.frame(stringsAsFactors=FALSE)
-    for(hlite in htList){
-        if(length(ranges(hlite$track))){
-            inds <- setdiff(sort(length(expandedTrackList)-hlite$index+1), which(sapply(expandedTrackList, is, "IdeogramTrack")))
-            y <- reduce(IRanges(start=inds, width=1))
-            yy <- ifelse(start(y)==1, 0, sum(spaceSetup$spaceNeeded[1:start(y)-1]))
-            ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
-            htBoxes <- rbind(htBoxes, data.frame(y=yy, height=ht, x=start(hlite$track), width=width(hlite$track),
-                                                 col=.dpOrDefault(hlite$track, "col", "orange"),
-                                                 fill=.dpOrDefault(hlite$track, "fill", "red"),
-                                                 lwd=.dpOrDefault(hlite$track, "lwd", 1),
-                                                 lty=.dpOrDefault(hlite$track, "lty", 1),
-                                                 alpha=.dpOrDefault(hlite$track, "alpha", 1),
-                                                 inBackground=.dpOrDefault(hlite$track, "inBackground", TRUE),
-                                                 stringsAsFactors=FALSE))
-        }
+    spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width,
+        spacing = innerMargin)
+    htBoxes <- data.frame(stringsAsFactors = FALSE)
+    for (hlite in htList) {
+        inds <- setdiff(sort(length(expandedTrackList) - hlite$index +
+            1), which(sapply(expandedTrackList, is, "IdeogramTrack")))
+        y <- reduce(IRanges(start = inds, width = 1))
+        yy <- ifelse(start(y) == 1, 0, sum(spaceSetup$spaceNeeded[1:start(y) -
+            1]))
+        ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
+        htBoxes <- rbind(htBoxes, data.frame(y = yy, height = ht,
+            x = start(hlite$track), width = width(hlite$track),
+            col = .dpOrDefault(hlite$track, "col", "orange"),
+            fill = .dpOrDefault(hlite$track, "fill", "red"),
+            lwd = .dpOrDefault(hlite$track, "lwd", 1), lty = .dpOrDefault(hlite$track,
+                "lty", 1), alpha = .dpOrDefault(hlite$track,
+                "alpha", 1), inBackground = .dpOrDefault(hlite$track,
+                "inBackground", TRUE), stringsAsFactors = FALSE))
     }
-    .drawHtBoxes <- function(htBoxes, background=TRUE){
-        htBoxes <- htBoxes[htBoxes$inBackground == background, , drop=FALSE]
-        rscales = if(strds[1] == "reverse") c(from=ranges["to"], to=ranges["from"]) else ranges
-        if(nrow(htBoxes)){
-            vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing, xscale=rscales,
-                                                  width=1 - spaceSetup$title.width - spaceSetup$spacing*2, just=0) else {
-                                                      viewport(width=1, xscale=rscales)}
+    .drawHtBoxes <- function(htBoxes, background = TRUE) {
+        htBoxes <- htBoxes[htBoxes$inBackground == background,
+            , drop = FALSE]
+        if (nrow(htBoxes)) {
+            vpContent <- if (!panel.only)
+                viewport(x = spaceSetup$title.width + spaceSetup$spacing,
+                  xscale = ranges, width = 1 - spaceSetup$title.width -
+                    spaceSetup$spacing * 2, just = 0)
+            else viewport(width = 1, xscale = ranges)
             pushViewport(vpContent)
-            grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
-                      gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
+            grid.rect(x = htBoxes$x, just = c(0, 1), width = htBoxes$width,
+                y = htBoxes$y + htBoxes$height, height = htBoxes$height,
+                gp = gpar(col = htBoxes$col, fill = htBoxes$fill,
+                  lwd = htBoxes$lwd, lty = htBoxes$lty, alpha = htBoxes$alpha),
+                default.units = "native")
             popViewport(1)
         }
     }
-    if(nrow(htBoxes))
+    if (nrow(htBoxes))
         .drawHtBoxes(htBoxes)
-    ## Now the track content
-    for(i in rev(seq_along(expandedTrackList)))
-    {
-        vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i])
+    for (i in rev(seq_along(expandedTrackList))) {
+        vpTrack <- viewport(x = 0, y = sum(spaceSetup$spaceNeeded[1:i]),
+            just = c(0, 1), width = 1, height = spaceSetup$spaceNeeded[i])
         pushViewport(vpTrack)
-		fill <- .dpOrDefault(expandedTrackList[[i]], "background.title", .DEFAULT_SHADED_COL)
-        thisTrack <- if(is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
-        if(!panel.only) {
-            fontSettings <- .fontGp(expandedTrackList[[i]], subtype="title", cex=NULL)
-            vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0, gp=fontSettings)
+        fill <- .dpOrDefault(expandedTrackList[[i]], "background.title",
+            .DEFAULT_SHADED_COL)
+        thisTrack <- if (is(expandedTrackList[[i]], "OverlayTrack"))
+            expandedTrackList[[i]]@trackList[[1]]
+        else expandedTrackList[[i]]
+        if (!panel.only) {
+            fontSettings <- .fontGp(expandedTrackList[[i]], subtype = "title",
+                cex = NULL)
+            vpTitle <- viewport(x = 0, width = spaceSetup$title.width,
+                just = 0, gp = fontSettings)
             pushViewport(vpTitle)
-            lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
-            col.border.title <- .dpOrDefault(thisTrack, "col.border.title", "transparent")
-            grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
+            lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title",
+                1)
+            col.border.title <- .dpOrDefault(thisTrack, "col.border.title",
+                "transparent")
+            grid.rect(gp = gpar(fill = fill, col = col.border.title,
+                lwd = lwd.border.title))
             needAxis <- .needsAxis(thisTrack)
-            drawAxis(thisTrack, ranges["from"], ranges["to"], subset=FALSE)
+            drawAxis(thisTrack, ranges["from"], ranges["to"],
+                subset = FALSE)
             tit <- spaceSetup$nwrap[i]
-            ## FIXME: Do we want something smarted for the image map coordinates?
-            titleCoords <- rbind(titleCoords, cbind(.getImageMap(cbind(0,0,1,1)),
-                                                    title=names(expandedTrackList[[i]])))
-            if(.dpOrDefault(thisTrack, "showTitle", TRUE) && !is.null(tit) && tit!="")
-            {
-                x <- if(needAxis) 0.075 else 0.4
-                just <- if(needAxis) c("center", "top") else "center"
-                ## FIXME: We need to deal with this when calculating the space for the title bar
-                rot <- .dpOrDefault(thisTrack, "rotation.title", 90)
-                gp <- .fontGp(thisTrack, "title", cex=spaceSetup$cex[i])
-                suppressWarnings(grid.text(tit, unit(x, "npc"), rot=rot, gp=gp, just=just))
+            titleCoords <- rbind(titleCoords, cbind(.getImageMap(cbind(0,
+                0, 1, 1)), title = names(expandedTrackList[[i]])))
+            if (.dpOrDefault(thisTrack, "showTitle", TRUE) &&
+                !is.null(tit) && tit != "") {
+                x <- if (needAxis)
+                  0.075
+                else 0.4
+                just <- if (needAxis)
+                  c("center", "top")
+                else "center"
+                rot <- .dpOrDefault(thisTrack, "rotation.title",
+                  90)
+                gp <- .fontGp(thisTrack, "title", cex = spaceSetup$cex[i])
+                suppressWarnings(grid.text(tit, unit(x, "npc"),
+                  rot = rot, gp = gp, just = just))
             }
             popViewport(1)
         }
-        ## Draw the panel background, grid lines if necessary and the panel content
-        vpBackground <- if(!panel.only) viewport(x=spaceSetup$title.width,
-                                                 width=1-spaceSetup$title.width, just=0) else viewport(width=1)
+        vpBackground <- if (!panel.only)
+            viewport(x = spaceSetup$title.width, width = 1 -
+                spaceSetup$title.width, just = 0)
+        else viewport(width = 1)
         pushViewport(vpBackground)
-        grid.rect(gp=gpar(col="transparent", fill=.dpOrDefault(thisTrack, "background.panel", "transparent")))
+        grid.rect(gp = gpar(col = "transparent", fill = .dpOrDefault(thisTrack,
+            "background.panel", "transparent")))
         drawGrid(thisTrack, ranges["from"], ranges["to"])
         popViewport(1)
-        fontSettings <- .fontGp(expandedTrackList[[i]], cex=NULL)
-        vpContentOuter <- if(!panel.only)
-            viewport(x=spaceSetup$title.width, width=1-spaceSetup$title.width,
-                     just=0, gp=fontSettings, clip=TRUE) else viewport(width=1, gp=fontSettings, clip=TRUE)
+        fontSettings <- .fontGp(expandedTrackList[[i]], cex = NULL)
+        vpContentOuter <- if (!panel.only)
+            viewport(x = spaceSetup$title.width, width = 1 -
+                spaceSetup$title.width, just = 0, gp = fontSettings,
+                clip = TRUE)
+        else viewport(width = 1, gp = fontSettings, clip = TRUE)
         pushViewport(vpContentOuter)
-        vpContent <- if(!panel.only)
-            viewport(x=spaceSetup$spacing, width=1-(spaceSetup$spacing*2), just=0, gp=fontSettings) else viewport(width=1, gp=fontSettings)
+        vpContent <- if (!panel.only)
+            viewport(x = spaceSetup$spacing, width = 1 - (spaceSetup$spacing *
+                2), just = 0, gp = fontSettings)
+        else viewport(width = 1, gp = fontSettings)
         pushViewport(vpContent)
-        tmp <- drawGD(expandedTrackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], subset=FALSE)
-        if(!is.null(tmp))
-            map[[(length(map)+1)-i]] <- tmp
+        tmp <- drawGD(expandedTrackList[[i]], minBase = ranges["from"],
+            maxBase = ranges["to"], subset = FALSE)
+        if (!is.null(tmp))
+            map[[(length(map) + 1) - i]] <- tmp
         popViewport(2)
-        if(.dpOrDefault(thisTrack, "frame", FALSE))
-            grid.rect(gp=gpar(col=.dpOrDefault(thisTrack, "col.frame", .DEFAULT_SHADED_COL), fill="transparent"))
+        if (.dpOrDefault(thisTrack, "frame", FALSE))
+            grid.rect(gp = gpar(col = .dpOrDefault(thisTrack,
+                "col.frame", .DEFAULT_SHADED_COL), fill = "transparent"))
         popViewport(1)
     }
-    if(nrow(htBoxes))
+    if (nrow(htBoxes))
         .drawHtBoxes(htBoxes, FALSE)
-    popViewport(if(panel.only) 1 else 2)
-    tc <- as.character(titleCoords[,5])
+    popViewport(if (panel.only)
+        1
+    else 2)
+    tc <- as.character(titleCoords[, 5])
     tc[which(tc == "" | is.na(tc) | is.null(tc))] = "NA"
     names(tc) <- tc
-    if(!is.null(titleCoords))
-    {
-        tcoord <- as.matrix(titleCoords[,1:4])
+    if (!is.null(titleCoords)) {
+        tcoord <- as.matrix(titleCoords[, 1:4])
         rownames(tcoord) <- names(tc)
-        map$titles <- ImageMap(coords=tcoord, tags=list(title=tc))
+        map$titles <- ImageMap(coords = tcoord, tags = list(title = tc))
     }
     done <- TRUE
     return(invisible(map))
 }
-
 
 
 ## Try to extract the (unique) genome information from a GRanges objects with the possibility to fall back to a default value
