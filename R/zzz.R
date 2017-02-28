@@ -17,11 +17,11 @@ get_fun = function(fun_name) {
 }
 
 get_origin_fun = function(fun_name) {
-	get(paste0(fun_name, "_origin"), envir = asNamespace("Gviz.epik"))
+	get(paste0(fun_name, "_origin"), envir = topenv())
 }
 
 reset_fun = function(fun_name) {
-	change_fun(fun_name, get(paste0(fun_name, "_origin"), envir = asNamespace("Gviz.epik")))
+	change_fun(fun_name, get(paste0(fun_name, "_origin"), envir = topenv()))
 }
 
 .boxes = function(...) {
