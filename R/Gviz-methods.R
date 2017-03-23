@@ -1125,7 +1125,7 @@ setMethod("subset", signature(x="ReferenceDataTrack"), function(x, from, to, chr
     if(missing(from) || is.null(from) || missing(to) || is.null(to))
         stop("Need both start and end location to subset a ReferenceDataTrack")
     if(missing(chromosome) || is.null(chromosome))
-        chromosome <- Gviz.epik::chromosome(x)
+        chromosome <- epik.Gviz::chromosome(x)
     subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
     if(length(ranges(x))==0 || !all(overlapsAny(ranges(x),subRegion))){
         vals <- x@stream(x@reference, subRegion)
@@ -1185,7 +1185,7 @@ setMethod("subset", signature(x="ReferenceAnnotationTrack"), function(x, from, t
     if(missing(from) || is.null(from) || missing(to) || is.null(to))
         stop("Need both start and end location to subset a ReferenceAnnotationTrack")
     if(missing(chromosome) || is.null(chromosome))
-        chromosome <- Gviz.epik::chromosome(x)
+        chromosome <- epik.Gviz::chromosome(x)
     subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
     if(length(ranges(x))==0 || all(overlapsAny(ranges(x),subRegion))){
         cMap <- .resolveColMapping(x@stream(x@reference, subRegion), x@args, x@mapping)
@@ -1282,7 +1282,7 @@ setMethod("subset", signature(x="ReferenceAlignmentsTrack"), function(x, from, t
     if(missing(from) || is.null(from) || missing(to) || is.null(to))
         stop("Need both start and end location to subset a ReferenceAnnotationTrack")
     if(missing(chromosome) || is.null(chromosome)){
-        chromosome <- Gviz.epik::chromosome(x)
+        chromosome <- epik.Gviz::chromosome(x)
     }else{
         chromosome <- .chrName(chromosome)
     }
@@ -2191,7 +2191,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             y <- c(rep(readInfo$stack[sel] + sh, 2), rep(readInfo$stack[sel] - sh, 2))
             id <- rep(readInfo$uid[sel], 4)
             ## The arrow heads facing right
-            w <- Gviz.epik:::.pxResolution(coord="x", 5)
+            w <- epik.Gviz:::.pxResolution(coord="x", 5)
             sel <- readInfo$arrow == "+"
             ah <- pmax(start(readInfo)[sel], end(readInfo)[sel]-w)
             x <- c(x, start(readInfo)[sel], ah, end(readInfo)[sel], ah, start(readInfo)[sel])
