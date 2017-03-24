@@ -20,7 +20,7 @@
 
 \description{
   
-  The virtual parent class for all track types in the Gviz
+  The virtual parent class for all track types in the epik.Gviz
   package which contain potentially overlapping annotation items that
   have to be stacked when plotted.
 
@@ -171,7 +171,7 @@
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawGD(obj, prepare=FALSE)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=FALSE)}}
 	  
       }
     }
@@ -198,7 +198,7 @@
       
       \describe{
 	
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj)}}
 
       }
     }
@@ -214,7 +214,7 @@
       
       \describe{
 	
-      	\item{}{\code{Gviz:::stacks(obj)}}
+      	\item{}{\code{epik.Gviz:::stacks(obj)}}
 
       }
     }

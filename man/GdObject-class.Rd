@@ -40,7 +40,7 @@
 
 \description{
   
-  The virtual parent class for all track items in the Gviz
+  The virtual parent class for all track items in the epik.Gviz
   package.  This class definition contains all the common entities that
   are needed for a track to be plotted. During object instantiation for
   any of the sub-classes inheriting from \code{GdObject}, this class'
@@ -350,7 +350,7 @@
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -377,7 +377,7 @@
       
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+	\item{}{\code{epik.Gviz:::drawGrid(obj)}}
 
       }
     }

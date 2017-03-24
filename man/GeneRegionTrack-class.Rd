@@ -148,7 +148,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
       \item{}{A \code{character} scalar: in this case the value of the
 	\code{range} argument is considered to be a file path to an
 	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
+	the \code{epik.Gviz} package as identified by the file extension. See
 	the \code{importFunction} documentation below for further
 	details.}
 
@@ -232,7 +232,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
     try to build the chromosome information based on the available
     inputs, and as a last resort will fall back to the value
     \code{chrNA}. Please note that by definition all objects in the
-    \code{Gviz} package can only have a single active chromosome at a
+    \code{epik.Gviz} package can only have a single active chromosome at a
     time (although internally the information for more than one
     chromosome may be present), and the user has to call the
     \code{chromosome<-} replacement method in order to change to a
@@ -662,7 +662,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+	\item{}{\code{epik.Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -716,11 +716,11 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 
       }
@@ -747,7 +747,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+      	\item{}{\code{epik.Gviz:::drawGrid(obj, from=10, to=100)}}
 
       }
     }
@@ -775,7 +775,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -832,7 +832,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+      	\item{}{\code{epik.Gviz:::stacks(obj)}}
 
       }
     }

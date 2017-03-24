@@ -453,7 +453,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+	\item{}{\code{epik.Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -498,11 +498,11 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 
       }
@@ -529,7 +529,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+      	\item{}{\code{epik.Gviz:::drawGrid(obj, from=10, to=100)}}
 
       }
     }
@@ -557,7 +557,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -614,7 +614,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+      	\item{}{\code{epik.Gviz:::stacks(obj)}}
 
       }
     }

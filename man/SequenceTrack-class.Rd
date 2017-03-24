@@ -65,14 +65,14 @@ importFunction, stream=FALSE, ...)
 	the different chromosome sequences.}
       
       \item{}{An object of class \code{\linkS4class{BSgenome}}. The
-	\code{Gviz} package tries to follow the \code{BSgenome}
+	\code{epik.Gviz} package tries to follow the \code{BSgenome}
 	philosophy in that the respective chromosome sequences are only
 	realized once they are first accessed.}
       
       \item{}{A \code{character} scalar: in this case the value of the
 	\code{sequence} argument is considered to be a file path to an
 	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
+	the \code{epik.Gviz} package as identified by the file extension. See
 	the \code{importFunction} documentation below for further
 	details.}
 
@@ -88,7 +88,7 @@ importFunction, stream=FALSE, ...)
     to make sure that sequences for the respective chromosomes are
     indeed part of the object. If not provided here, the constructor
     will set it to the first available sequence. Please note that by
-    definition all objects in the \code{Gviz} package can only have a
+    definition all objects in the \code{epik.Gviz} package can only have a
     single active chromosome at a time (although internally the
     information for more than one chromosome may be present), and the
     user has to call the \code{chromosome<-} replacement method in order
@@ -121,7 +121,7 @@ importFunction, stream=FALSE, ...)
 
     Both file types support indexing by genomic coordinates, and it
     makes sense to only load the part of the file that is needed for
-    plotting. To this end, the \code{Gviz} package defines the derived
+    plotting. To this end, the \code{epik.Gviz} package defines the derived
     \code{ReferenceSequenceTrack} class, which supports streaming data
     from the file system. The user typically does not have to deal with
     this distinction but may rely on the constructor function to make
@@ -590,7 +590,7 @@ importFunction, stream=FALSE, ...)
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -617,7 +617,7 @@ importFunction, stream=FALSE, ...)
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+	\item{}{\code{epik.Gviz:::drawGrid(obj)}}
 	
       }
     }

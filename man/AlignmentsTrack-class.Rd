@@ -173,7 +173,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     try to construct the chromosome information based on the available
     inputs, and as a last resort will fall back to the value
     \code{chrNA}. Please note that by definition all objects in the
-    \code{Gviz} package can only have a single active chromosome at a
+    \code{epik.Gviz} package can only have a single active chromosome at a
     time (although internally the information for more than one
     chromosome may be present), and the user has to call the
     \code{chromosome<-} replacement method in order to change to a
@@ -430,7 +430,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawAxis(obj)}}
+      	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -472,11 +472,11 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 
       }
@@ -558,7 +558,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj)}}
 
       }
     }
@@ -574,7 +574,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+      	\item{}{\code{epik.Gviz:::stacks(obj)}}
 
       }
     }
@@ -1501,7 +1501,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 ## Creating objects
 afrom <- 2960000
 ato <- 3160000
-alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+alTrack <- AlignmentsTrack(system.file(package="epik.Gviz", "extdata",
 "gapped.bam"), isPaired=TRUE)
 plotTracks(alTrack, from=afrom, to=ato, chromosome="chr12")
 
@@ -1516,12 +1516,12 @@ if(require(BSgenome.Hsapiens.UCSC.hg19)){
 strack <- SequenceTrack(Hsapiens, chromosome="chr21")
 afrom <- 44945200
 ato <- 44947200
-alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+alTrack <- AlignmentsTrack(system.file(package="epik.Gviz", "extdata",
 "snps.bam"), isPaired=TRUE, referenceSequence=strack)
 plotTracks(alTrack, chromosome="chr21", from=afrom, to=ato)
 
 ## Including sequence information in the track list
-alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+alTrack <- AlignmentsTrack(system.file(package="epik.Gviz", "extdata",
 "snps.bam"), isPaired=TRUE)
 plotTracks(c(alTrack, strack), chromosome="chr21", from=44946590,
 to=44946660)

@@ -310,11 +310,11 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -345,7 +345,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
   
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+	\item{}{\code{epik.Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -592,7 +592,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -619,7 +619,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+	\item{}{\code{epik.Gviz:::drawGrid(obj)}}
 
       }
     }

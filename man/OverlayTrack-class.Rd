@@ -17,7 +17,7 @@
 
 \description{
 
-  A container for other track objects from the Gviz package that allows
+  A container for other track objects from the epik.Gviz package that allows
   for overlays of their content on the same region of the plot.
 
 }
@@ -109,7 +109,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj)}}
 
       }
     }

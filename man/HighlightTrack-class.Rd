@@ -16,7 +16,7 @@
 
 \description{
 
-  A container for other track objects from the Gviz package that allows
+  A container for other track objects from the epik.Gviz package that allows
   for the addition of a common highlighting area across tracks.
 
 }
@@ -90,7 +90,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
     try to build the chromosome information based on the available
     inputs, and as a last resort will fall back to the value
     \code{chrNA}. Please note that by definition all objects in the
-    \code{Gviz} package can only have a single active chromosome at a
+    \code{epik.Gviz} package can only have a single active chromosome at a
     time (although internally the information for more than one
     chromosome may be present), and the user has to call the
     \code{chromosome<-} replacement method in order to change to a
@@ -183,7 +183,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj)}}
 
       }
     }

@@ -89,7 +89,7 @@ getScheme(name=getOption("Gviz.scheme"))
 
   Users might find themselves changing the same parameters over and over
   again, and it would make sense to register these modifications in a
-  central location once and for all. To this end the Gviz package
+  central location once and for all. To this end the epik.Gviz package
   supports display parameter schemes. A scheme is essentially just a
   bunch of nested named lists, where the names on the first level of
   nesting should correspond to track class names, and the names on the

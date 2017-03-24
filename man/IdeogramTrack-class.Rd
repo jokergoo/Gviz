@@ -349,11 +349,11 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 
       }
@@ -827,7 +827,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -854,7 +854,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+	\item{}{\code{epik.Gviz:::drawGrid(obj)}}
 
       }
     }

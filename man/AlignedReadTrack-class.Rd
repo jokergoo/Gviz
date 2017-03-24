@@ -336,7 +336,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{Gviz:::drawAxis(obj)}}
+      	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 	
       }
     }
@@ -378,11 +378,11 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -408,7 +408,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+      	\item{}{\code{epik.Gviz:::drawGrid(obj, from=10, to=100)}}
 	
       }
     }
@@ -489,7 +489,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+      	\item{}{\code{epik.Gviz:::setStacks(obj)}}
 
       }
     }
@@ -505,7 +505,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{Gviz:::stacks(obj)}}
+      	\item{}{\code{epik.Gviz:::stacks(obj)}}
 
       }
     }

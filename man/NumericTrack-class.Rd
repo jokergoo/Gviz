@@ -10,7 +10,7 @@
 
 \description{
   
-  The virtual parent class for all track items in the Gviz
+  The virtual parent class for all track items in the epik.Gviz
   package designed to contain numeric data. This class merely exists for
   dispatching purpose.
 
@@ -85,7 +85,7 @@
       
       \describe{
 
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -111,7 +111,7 @@
       
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+	\item{}{\code{epik.Gviz:::drawGrid(obj)}}
 
       }
     }

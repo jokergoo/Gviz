@@ -110,7 +110,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
        \item{}{A \code{character} scalar: in this case the value of the
 	\code{range} argument is considered to be a file path to an
 	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
+	the \code{epik.Gviz} package as identified by the file extension. See
 	the \code{importFunction} documentation below for further
 	details.}
 
@@ -154,7 +154,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     try to construct the chromosome information based on the available
     inputs, and as a last resort will fall back to the value
     \code{chrNA}. Please note that by definition all objects in the
-    \code{Gviz} package can only have a single active chromosome at a
+    \code{epik.Gviz} package can only have a single active chromosome at a
     time (although internally the information for more than one
     chromosome may be present), and the user has to call the
     \code{chromosome<-} replacement method in order to change to a
@@ -191,7 +191,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     Some file types support indexing by genomic coordinates (e.g.,
     \code{bigWig} and \code{bam}), and it makes sense to only load the
     part of the file that is needed for plotting. To this end, the
-    \code{Gviz} package defines the derived \code{ReferenceDataTrack}
+    \code{epik.Gviz} package defines the derived \code{ReferenceDataTrack}
     class, which supports streaming data from the file system. The user
     typically does not have to deal with this distinction but may rely
     on the constructor function to make the right choice as long as the
@@ -553,7 +553,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+	\item{}{\code{epik.Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -595,11 +595,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{epik.Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{epik.Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 
       }
@@ -627,7 +627,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawAxis(obj)}}
+      	\item{}{\code{epik.Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -665,7 +665,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+	\item{}{\code{epik.Gviz:::drawGrid(obj)}}
 
       }
     }
