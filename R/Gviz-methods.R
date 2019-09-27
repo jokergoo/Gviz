@@ -1933,10 +1933,20 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     ############
     panelFun = .dpOrDefault(GdObject, "panelFun", NULL)
     if(!is.null(panelFun)) {
-        panelFun()
+        vp = current.viewport()
     }
     ############
     popViewport(1)
+
+    if(!is.null(panelFun)) {
+        current_vp_name = current.viewport()$name
+        upViewport(n = 2)
+        vp$clip = FALSE
+        pushViewport(vp)
+        panelFun()
+        popViewport()
+        seekViewport(current_vp_name)
+    }
     ## Finaly we set up the image map
     ## FIXME: we may want to record the merging information here
     im <- if(!is.null(box)) {
@@ -3238,10 +3248,20 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     ############
     panelFun = .dpOrDefault(GdObject, "panelFun", NULL)
     if(!is.null(panelFun)) {
-        panelFun()
+        vp = current.viewport()
     }
     ############
     popViewport(1)
+
+    if(!is.null(panelFun)) {
+        current_vp_name = current.viewport()$name
+        upViewport(n = 2)
+        vp$clip = FALSE
+        pushViewport(vp)
+        panelFun()
+        popViewport()
+        seekViewport(current_vp_name)
+    }
 
     return(invisible(GdObject))
 })
